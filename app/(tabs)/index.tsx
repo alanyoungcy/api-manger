@@ -110,7 +110,7 @@ export default function APIKeysScreen() {
               <TouchableOpacity
                 style={[styles.button, styles.cancelButton]}
                 onPress={() => setShowAddForm(false)}>
-                <Text style={styles.buttonText}>Cancel</Text>
+                <Text style={styles.buttonTextDark}>Cancel</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.button, styles.addButton]}
@@ -224,6 +224,11 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 16,
     marginBottom: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   input: {
     borderWidth: 1,
@@ -248,6 +253,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     minWidth: 100,
     alignItems: 'center',
+    marginLeft: 8,
   },
   cancelButton: {
     backgroundColor: '#e2e8f0',
@@ -257,6 +263,11 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  buttonTextDark: {
+    color: '#0f172a',
     fontSize: 16,
     fontWeight: '600',
   },
