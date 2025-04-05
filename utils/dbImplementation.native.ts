@@ -1,4 +1,5 @@
 import * as SQLite from 'expo-sqlite';
+import * as FileSystem from 'expo-file-system';
 import { APIKey } from './db.types';
 
 // Native SQLite implementation
@@ -7,17 +8,18 @@ class NativeStorage {
 
   constructor() {
     try {
-      // Check which API is available in the current Expo SDK version
-      // Use bracket notation to avoid TypeScript errors
-      // @ts-ignore - Ignore TypeScript checking on property access
-      if (SQLite['openDatabase']) {
-        // @ts-ignore
-        this.db = SQLite['openDatabase']('apikeys.db');
-      } else if (SQLite.openDatabaseSync) {
-        this.db = SQLite.openDatabaseSync('apikeys.db');
-      } else {
-        throw new Error('No compatible SQLite API found');
-      }
+      // Define the database directory
+      const dbDirectory = `${FileSystem.documentDirectory}SQLite`;
+      
+      // Ensure the directory exists (this is asynchronous but we proceed anyway)
+      FileSystem.makeDirectoryAsync(dbDirectory, { intermediates: true })
+        .catch(e => console.warn("Could not create database directory:", e));
+      
+      // Use the database directory for storage
+      const dbPath = `${dbDirectory}/apikeys.db`;
+
+      // Use the correct API for opening the database with the directory
+      this.db = SQLite.openDatabaseSync('apikeys.db', undefined, dbDirectory);
 
       // Verify the database has the transaction method
       if (!this.db || typeof this.db.transaction !== 'function') {
